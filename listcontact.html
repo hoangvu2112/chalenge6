@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Contact</title>
+    <link rel="stylesheet" href="/styles/listcontact.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/main.js"></script>
+  </head>
+  <body>
+    <div class="dashboard">
+      <div class="dashboard__sidebar">
+        <div class="dashboard__logo">DashStack</div>
+        <div class="dashboard__nav">
+          <div class="dashboard__nav-heading">PAGES</div>
+          <!-- Added heading here -->
+          <div class="dashboard__nav-list">
+            <div class="dashboard__group">
+              <div class="dashboard__nav-item dashboard__nav-item--group"></div>
+              <button class="dashboard__nav-item dashboard__nav-item--active">
+                Contact
+              </button>
+            </div>
+
+            <button class="dashboard__nav-item">Team</button>
+          </div>
+        </div>
+        <div class="dashboard__logout">
+          <button class="dashboard__logout-button">Logout</button>
+        </div>
+      </div>
+
+      <div class="dashboard__content">
+        <div class="dashboard__header">
+          <div class="dashboard__user-info">
+            <div class="dashboard__user-avatar">
+              <img src="/images/avatar.svg" alt="User Avatar" />
+            </div>
+            <div class="dashboard__avatar">
+              <div class="dashboard__user-name">Moni Roy</div>
+              <div class="dashboard__user-role">User</div>
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="content__header">
+            <div class="content__title">Contact</div>
+            <div class="content__button">Add New Contact</div>
+          </div>
+
+          <div class="contact-list"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

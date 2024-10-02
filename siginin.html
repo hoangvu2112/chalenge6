@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles/siginip.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/main.js"></script>
+  </head>
+  <body class="signIn">
+    <div class="hero">
+      <div class="header">
+        <div class="main-content">
+          <div class="login-box">
+            <div class="login-hero">
+              <div class="login-header">
+                <div class="welcome-text">Login to Account</div>
+                <div class="sub-text">
+                  Please enter your email and password to continue
+                </div>
+              </div>
+            </div>
+            <div class="form-container">
+              <div class="input-box">
+                <div class="title">Email address:</div>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="esteban_schiller@gmail.com"
+                />
+              </div>
+
+              <div class="input-box password-box">
+                <div class="forget">
+                  <div class="title">Password</div>
+                  <div class="title1">Forget Password?</div>
+                </div>
+
+                <input type="password" id="password" placeholder="Password" />
+                <div
+                  class="show-password-icon"
+                  onclick="togglePassword('password')"
+                ></div>
+                <div class="check">
+                  <img src="/images/Check.svg" />
+                  <div class="title">Remember Password</div>
+                </div>
+              </div>
+              <div class="sign-up-box">
+                <button type="submit" class="create-button">Sign in</button>
+                <div class="sign-up-text">
+                  Don’t have an account?
+                  <a href="/siginup.html">Create Account</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

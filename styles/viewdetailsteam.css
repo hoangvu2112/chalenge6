@@ -1,0 +1,195 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f6fa;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+.dashboard__sidebar {
+  width: 18%;
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  text-align: center;
+  position: relative;
+}
+.dashboard__sidebar > .dashboard__logo {
+  color: #0060df;
+  font-family: Nunito Sans;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+.dashboard__sidebar .dashboard__nav-heading {
+  font-size: 12px;
+  color: #8f9aa4;
+  text-transform: uppercase;
+  padding: 16px 24px;
+  display: flex;
+}
+.dashboard__sidebar .dashboard__nav-list {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard__sidebar .dashboard__nav-list .dashboard__nav-item {
+  width: 100%;
+  font-size: 14px;
+  font-family: Nunito Sans;
+  padding: 15px 20px;
+  border: none;
+  background-color: #0060df;
+  border-radius: 8px;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+.dashboard__sidebar .dashboard__nav-list .dashboard__nav-item:hover {
+  background-color: #e2e3e6;
+}
+.dashboard__sidebar .dashboard__nav-list .dashboard__nav-item--active {
+  background-color: transparent;
+  color: #202224;
+  font-family: Nunito Sans;
+  font-size: 14px;
+  font-weight: 600;
+}
+.dashboard__sidebar .dashboard__nav-list .dashboard__group {
+  display: flex;
+  position: relative;
+}
+.dashboard__sidebar .dashboard__nav-list .dashboard__group .dashboard__nav-item--group {
+  width: 4px;
+  background-color: #0060df;
+  color: #fff;
+  font-family: Nunito Sans;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: -55px;
+  height: 18px;
+}
+.dashboard__sidebar .dashboard__logout {
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  bottom: 0;
+  border-top: 0.6px solid #e0e0e0;
+  width: 100%;
+  justify-content: center;
+  left: 0px;
+}
+.dashboard__sidebar .dashboard__logout .dashboard__logout-button {
+  font-size: 14px;
+  padding: 10px 20px;
+  color: #202224;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: Nunito Sans;
+}
+.dashboard__sidebar .dashboard__logout .dashboard__logout-button:hover {
+  text-decoration: underline;
+}
+.dashboard__content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+.dashboard__header {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #ffffff;
+  padding: 13px 75px 13px 0;
+}
+.dashboard__header .dashboard__user-info {
+  display: flex;
+  align-items: center;
+}
+.dashboard__header .dashboard__user-info > .dashboard__user-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.dashboard__header .dashboard__user-info > .dashboard__user-name {
+  font-size: 18px;
+  margin-right: 5px;
+  font-weight: bold;
+}
+.dashboard__header .dashboard__user-info > .dashboard__user-role {
+  font-size: 16px;
+  color: #777;
+}
+
+.contact-form {
+  background-color: #f5f6fa;
+  height: -webkit-fill-available;
+}
+.contact-form__title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3b3e46;
+  margin: 38px 0 37px 30px;
+}
+.contact-form__fields {
+  grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  gap: 60px;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  width: 780px;
+  margin: 0 auto;
+  padding: 136px 180px;
+}
+.contact-form__fields > .contact-form__group {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+}
+.contact-form__fields > .contact-form__group--button {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+}
+.contact-form__label {
+  font-size: 16px;
+  color: #3b3e46;
+  margin-bottom: 8px;
+}
+.contact-form__label .contact-form__input {
+  width: 360px;
+}
+.contact-form__input input, .contact-form__input select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f5f2f2;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+.contact-form__input input:focus, .contact-form__input select:focus {
+  border-color: #0060df;
+  outline: none;
+}
+.contact-form__button button {
+  padding: 15px 40px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #0060df;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.contact-form__button button:hover {
+  background-color: #0052bd;
+}/*# sourceMappingURL=viewdetailsteam.css.map */

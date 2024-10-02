@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>view details team</title>
+    <link rel="stylesheet" href="/styles/viewdetailsteam.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/team.js"></script>
+  </head>
+  <body>
+    <div class="dashboard">
+      <div class="dashboard__sidebar">
+        <div class="dashboard__logo">DashStack</div>
+        <div class="dashboard__nav">
+          <div class="dashboard__nav-heading">PAGES</div>
+          <!-- Added heading here -->
+          <div class="dashboard__nav-list">
+            <button class="dashboard__nav-item dashboard__nav-item--active">
+              Contact
+            </button>
+            <div class="dashboard__group">
+              <div class="dashboard__nav-item dashboard__nav-item--group"></div>
+              <button class="dashboard__nav-item">Team</button>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard__logout">
+          <button class="dashboard__logout-button">Logout</button>
+        </div>
+      </div>
+
+      <div class="dashboard__content">
+        <div class="dashboard__header">
+          <div class="dashboard__user-info">
+            <div class="dashboard__user-avatar">
+              <img src="/images/avatar.svg" alt="User Avatar" />
+            </div>
+            <div class="dashboard__avatar">
+              <div class="dashboard__user-name">Moni Roy</div>
+              <div class="dashboard__user-role">User</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <div class="contact-form__title">View details</div>
+          <div class="contact-form__wrap">
+            <div class="contact-form__fields">
+              <div class="contact-form__group">
+                <div class="contact-form__label">First Name</div>
+                <div class="contact-form__input">
+                  <input type="text" placeholder="Enter first name" readonly />
+                </div>
+              </div>
+              <div class="contact-form__group">
+                <div class="contact-form__label">Last Name</div>
+                <div class="contact-form__input">
+                  <input type="text" placeholder="Enter last name" readonly />
+                </div>
+              </div>
+              <div class="contact-form__group">
+                <div class="contact-form__label">Your email</div>
+                <div class="contact-form__input">
+                  <input type="email" placeholder="Enter email" readonly />
+                </div>
+              </div>
+              <div class="contact-form__group">
+                <div class="contact-form__label">Phone Number</div>
+                <div class="contact-form__input">
+                  <input type="tel" placeholder="Enter phone number" readonly />
+                </div>
+              </div>
+              <div class="contact-form__group">
+                <div class="contact-form__label">Position</div>
+                <div class="contact-form__input">
+                  <input type="" placeholder="Enter position" readonly />
+                </div>
+              </div>
+              <div class="contact-form__group">
+                <div class="contact-form__label">Gender</div>
+                <div class="contact-form__input">
+                  <select disabled>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,294 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f6fa;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+
+  &__sidebar {
+    width: 18%;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+
+    position: relative;
+    & > .dashboard__logo {
+      color: #0060df;
+      font-family: Nunito Sans;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 40px;
+    }
+
+    .dashboard__nav {
+      &-heading {
+        font-size: 12px;
+        color: #8f9aa4;
+        text-transform: uppercase;
+        padding: 16px 24px;
+        display: flex;
+      }
+
+      &-list {
+        display: flex;
+        flex-direction: column;
+
+        .dashboard__nav-item {
+          width: 100%;
+          font-size: 14px;
+          font-family: Nunito Sans;
+          padding: 15px 20px;
+          border: none;
+          background-color: transparent;
+          border-radius: 8px;
+          color: #202224;
+          text-align: left;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #e2e3e6;
+          }
+
+          &--active {
+            background-color: #0060df !important;
+            color: #fff;
+            font-family: Nunito Sans;
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+        .dashboard__group {
+          display: flex;
+          position: relative;
+          .dashboard__nav-item--group {
+            width: 4px;
+            background-color: #0060df;
+            color: #fff;
+            font-family: Nunito Sans;
+            font-size: 14px;
+            font-weight: 600;
+            position: absolute;
+            left: -55px;
+            height: 18px;
+          }
+        }
+      }
+    }
+
+    .dashboard__logout {
+      display: flex;
+      justify-content: flex-start;
+      position: absolute;
+      bottom: 0;
+
+      border-top: 0.6px solid #e0e0e0;
+      width: 100%;
+      justify-content: center;
+      left: 0px;
+
+      .dashboard__logout-button {
+        font-size: 14px;
+        padding: 10px 20px;
+        color: #202224;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: Nunito Sans;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ffffff;
+    padding: 13px 75px 13px 0;
+
+    .dashboard__user-info {
+      display: flex;
+      align-items: center;
+
+      & > .dashboard__user-avatar img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      & > .dashboard__user-name {
+        font-size: 18px;
+        margin-right: 5px;
+        font-weight: bold;
+      }
+
+      & > .dashboard__user-role {
+        font-size: 16px;
+        color: #777;
+      }
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+  background-color: #f5f6fa;
+  height: 100vh;
+  padding: 38px 30px 0 30px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px; // Adjust based on the layout width you need
+    margin-bottom: 20px;
+
+    .content__title {
+      font-family: Nunito Sans;
+      font-size: 32px;
+      line-height: 43.65px;
+      color: #202224;
+    }
+
+    .content__actions {
+      display: flex;
+      align-items: center;
+      gap: 10px; // Adjust the gap between search and button
+
+      .content__search {
+        padding: 8px 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 250px; // Adjust the width of the search box
+      }
+
+      .content__button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-family: Nunito Sans;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+      }
+    }
+  }
+
+  &__title {
+    font-family: Nunito Sans;
+    font-size: 32px;
+    line-height: 43.65px;
+    color: #202224;
+  }
+
+  &__button {
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: Nunito Sans;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.contact-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 columns per row
+  gap: 30px;
+  overflow: hidden;
+
+  .contact-card {
+    background-image: url(/images/Pattern.svg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    text-align: center;
+
+    &__image {
+      img {
+        padding: 46px 76px 24px 76px;
+      }
+    }
+
+    .contact-card__info {
+      display: flex;
+      gap: 4px;
+      flex-direction: column;
+      margin-bottom: 30px;
+
+      .contact-card__name {
+        font-family: Nunito Sans;
+        font-size: 16px;
+        color: #202224;
+      }
+
+      .contact-card__email {
+        font-family: Nunito Sans;
+        font-size: 14px;
+        font-weight: 400;
+        color: gray;
+      }
+      .contact-card__position {
+        font-family: Nunito Sans;
+        font-size: 14px;
+        font-weight: 400;
+        color: gray;
+      }
+    }
+
+    &__delete {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      div {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  // Hide the delete button image initially
+  .contact-card__delete img {
+    display: none;
+  }
+
+  // Show the delete button on hover
+  .contact-card:hover .contact-card__delete img {
+    display: block;
+    cursor: pointer;
+  }
+
+  // Optional: Set the size and alignment for the delete button image
+  .contact-card__delete img {
+    width: 100%;
+    height: 100%;
+  }
+}
