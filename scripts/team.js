@@ -248,11 +248,12 @@ function loginUser(username, email) {
   const user = {
     name: username,
     email: email,
+    avatar: getRandomAvatar(),
   };
   localStorage.setItem("USER", JSON.stringify(user)); // Lưu người dùng vào localStorage
 }
 $(document).ready(function () {
-  // Mảng các hình ảnh avatar ngẫu nhiên
+  // Mảng chứa các đường dẫn đến hình ảnh avatar ngẫu nhiên
   const imageArray = [
     "/images/avatar1.svg",
     "/images/avatar2.svg",
@@ -263,21 +264,27 @@ $(document).ready(function () {
 
   // Hàm để lấy hoặc lưu hình ảnh avatar ngẫu nhiên
   function getOrSetRandomAvatar() {
+    // Kiểm tra xem avatar đã có trong localStorage chưa
     let avatar = localStorage.getItem("avatar");
 
-    // Nếu chưa có avatar nào được lưu trữ, random và lưu lại
+    console.log("Avatar hiện tại trong localStorage: ", avatar); // Kiểm tra giá trị avatar trong localStorage
+
+    // Nếu chưa có avatar nào được lưu trữ, chọn ngẫu nhiên và lưu lại
     if (!avatar) {
       const randomIndex = Math.floor(Math.random() * imageArray.length);
-      avatar = imageArray[randomIndex];
+      avatar = imageArray[randomIndex]; // Chọn một hình ảnh ngẫu nhiên
       localStorage.setItem("avatar", avatar); // Lưu avatar đã chọn vào localStorage
+
+      console.log("Avatar mới được chọn và lưu vào localStorage: ", avatar); // Log avatar đã lưu
     }
 
-    return avatar;
+    return avatar; // Trả về avatar từ localStorage
   }
 
   // Hiển thị avatar ngẫu nhiên nhưng giữ nguyên sau khi reload
-  const avatar = getOrSetRandomAvatar();
-  $(".dashboard__user-avatar img").attr("src", avatar);
+  const avatar = getOrSetRandomAvatar(); // Lấy avatar từ localStorage
+  console.log("Avatar sẽ hiển thị: ", avatar); // Hiển thị thông báo về avatar đang được hiển thị
+  $(".dashboard__user-avatar img").attr("src", avatar); // Gán avatar vào thẻ img
 
   // Lấy thông tin người dùng từ localStorage (giả sử đã được lưu từ khi đăng nhập)
   const user = JSON.parse(localStorage.getItem("USER"));
@@ -294,6 +301,28 @@ $(document).ready(function () {
     // Xóa thông tin người dùng khỏi localStorage khi logout
     localStorage.removeItem("USER");
     localStorage.removeItem("avatar"); // Xóa avatar đã lưu
+    console.log("Đã xóa avatar và thông tin người dùng khỏi localStorage."); // Log sau khi xóa
     window.location.href = "/siginin.html"; // Điều hướng về trang đăng nhập
+  });
+});
+
+$(document).ready(function () {
+  // Bắt sự kiện khi người dùng nhập vào ô tìm kiếm
+  $(".content__search").on("input", function () {
+    // Lấy giá trị từ ô input
+    let searchValue = $(this).val().toLowerCase();
+
+    // Lặp qua từng thẻ contact-card và so khớp email
+    $(".contact-card").each(function () {
+      // Lấy email trong thẻ contact-card
+      let email = $(this).find(".contact-card__email").text().toLowerCase();
+
+      // Nếu email chứa giá trị tìm kiếm thì hiển thị, nếu không thì ẩn
+      if (email.includes(searchValue)) {
+        $(this).show(); // Hiển thị thẻ phù hợp
+      } else {
+        $(this).hide(); // Ẩn thẻ không phù hợp
+      }
+    });
   });
 });
