@@ -1,34 +1,221 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Hàm kiểm tra định dạng email
   function validateEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return emailPattern.test(email);
+    return emailPattern.test(email); // Trả về true nếu email hợp lệ
   }
 
-  // Hàm kiểm tra mật khẩu (ít nhất 6 ký tự, bao gồm số và ký tự đặc biệt)
+  // Hàm kiểm tra mật khẩu (ít nhất 6 ký tự, phải có 1 chữ cái viết hoa)
   function validatePassword(password) {
-    const passwordPattern = /^(?=.*[0-9])(?=.*\W)[A-Za-z\d\W]{6,}$/;
-    return passwordPattern.test(password);
+    return password.length >= 6 && /[A-Z]/.test(password); // Phải có ít nhất 1 chữ hoa và 6 ký tự
   }
 
-  // Kiểm tra Username (không được để trống)
-  function validateUsername(username) {
-    return username.trim() !== ""; // Kiểm tra không trống và bỏ các khoảng trắng dư thừa
-  }
-
-  // Kiểm tra email trùng lặp trong Local Storage
+  // Hàm kiểm tra email trùng lặp trong Local Storage (cho đăng ký)
   function isEmailDuplicate(email) {
     const accounts = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
     return accounts.some((account) => account.email === email);
   }
 
-  // Hàm đăng nhập người dùng
-  function loginUser(username, email) {
-    const user = {
-      name: username,
-      email: email,
-    };
-    localStorage.setItem("USER", JSON.stringify(user)); // Lưu người dùng vào localStorage
+  // Hàm xử lý hiển thị lỗi và thêm viền đỏ
+  function showError(inputId, errorMessage, show) {
+    const input = document.getElementById(inputId);
+    const errorElement = document.querySelector(`.${inputId}-error`);
+
+    if (show) {
+      input.classList.add("input--error");
+      if (errorElement) {
+        errorElement.textContent = errorMessage;
+        errorElement.style.display = "block";
+      }
+    } else {
+      input.classList.remove("input--error");
+      if (errorElement) {
+        errorElement.style.display = "none";
+      }
+    }
+  }
+
+  // Hàm kiểm tra checkbox có được chọn không và hiển thị lỗi
+  document.addEventListener("DOMContentLoaded", function () {
+    // Hàm kiểm tra checkbox có được chọn hay không và hiển thị lỗi
+    function validateCheckbox(checkboxId) {
+      const checkbox = document.getElementById(checkboxId);
+      if (!checkbox.checked) {
+        checkbox.classList.add("checkbox--error"); // Thêm lớp lỗi cho checkbox
+        return false;
+      } else {
+        checkbox.classList.remove("checkbox--error");
+        return true;
+      }
+    }
+
+    // Hàm xử lý hiển thị lỗi và thêm viền đỏ cho các trường khác (nếu có)
+    function showError(inputId, errorMessage, show) {
+      const input = document.getElementById(inputId);
+      const errorElement = document.querySelector(`.${inputId}-error`);
+
+      if (show) {
+        input.classList.add("input--error");
+        if (errorElement) {
+          errorElement.textContent = errorMessage;
+          errorElement.style.display = "block";
+        }
+      } else {
+        input.classList.remove("input--error");
+        if (errorElement) {
+          errorElement.style.display = "none";
+        }
+      }
+    }
+
+    // Xử lý khi người dùng nhấn nút Sign Up
+    document
+      .querySelector(".create-button")
+      .addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Kiểm tra checkbox
+        if (!validateCheckbox("remember-checkbox")) {
+          alert("You must accept the terms and conditions.");
+          return;
+        }
+
+        // Nếu tất cả hợp lệ thì submit form hoặc thực hiện hành động tiếp theo
+        alert("Form is valid and submitted!");
+      });
+  });
+
+  // Hàm kiểm tra username
+  function validateUsername(username) {
+    return username.trim() !== ""; // Username không được để trống
+  }
+
+  // Xử lý đăng ký
+  if (document.body.classList.contains("signUp")) {
+    document
+      .querySelector(".create-button")
+      .addEventListener("click", function (e) {
+        e.preventDefault();
+
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        let username = document.getElementById("name").value; // Lấy giá trị của username
+        let valid = true;
+
+        // Kiểm tra email
+        if (!validateEmail(email)) {
+          showError("email", "Invalid email format", true);
+          valid = false;
+        } else if (isEmailDuplicate(email)) {
+          showError("email", "Email already exists!", true);
+          valid = false;
+        } else {
+          showError("email", "", false);
+        }
+
+        // Kiểm tra username
+        if (!validateUsername(username)) {
+          showError("name", "Username cannot be empty", true);
+          valid = false;
+        } else {
+          showError("name", "", false);
+        }
+
+        // Kiểm tra mật khẩu
+        if (!validatePassword(password)) {
+          showError(
+            "password",
+            "Password must be at least 6 characters with one uppercase letter",
+            true
+          );
+          valid = false;
+        } else {
+          showError("password", "", false);
+        }
+
+        // Kiểm tra checkbox
+        if (!validateCheckbox("remember-checkbox")) {
+          valid = false;
+        }
+
+        // Nếu tất cả hợp lệ, lưu tài khoản vào Local Storage
+        if (valid) {
+          let accounts = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
+          accounts.push({
+            email: email,
+            username: username,
+            password: password,
+          });
+          localStorage.setItem("ACCOUNT", JSON.stringify(accounts));
+          alert("Registration successful! Redirecting to login page...");
+          window.location.href = "/signin.html"; // Chuyển đến trang đăng nhập
+        }
+      });
+  }
+
+  // Xử lý đăng nhập
+  if (document.body.classList.contains("signIn")) {
+    document
+      .querySelector(".create-button")
+      .addEventListener("click", function (e) {
+        e.preventDefault();
+
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        let valid = true;
+
+        // Kiểm tra email
+        if (!validateEmail(email)) {
+          showError("email", "Invalid email format", true);
+          valid = false;
+        } else {
+          showError("email", "", false);
+        }
+
+        // Kiểm tra mật khẩu
+        if (!validatePassword(password)) {
+          showError("password", "Password must be at least 6 characters", true);
+          valid = false;
+        } else {
+          showError("password", "", false);
+        }
+
+        // Kiểm tra email và mật khẩu đúng với dữ liệu trong Local Storage
+        if (valid && !isValidLogin(email, password)) {
+          showError("email", "Invalid email or password", true);
+          showError("password", "Invalid email or password", true);
+          valid = false;
+        }
+
+        // Kiểm tra checkbox "Remember me"
+        if (!validateCheckbox("remember-checkbox")) {
+          showError(
+            "remember-checkbox",
+            "You must accept terms and conditions",
+            true
+          );
+          valid = false;
+        } else {
+          showError("remember-checkbox", "", false);
+        }
+
+        // Nếu hợp lệ, chuyển đến dashboard
+        if (valid) {
+          alert("Login successful! Redirecting to dashboard...");
+          window.location.href = "/contact.html"; // Điều hướng sang dashboard
+        }
+      });
+  }
+
+  // Hàm để lấy avatar ngẫu nhiên cho tài khoản
+  function getRandomAvatar() {
+    const avatarArray = [
+      "/images/avatar.svg",
+      "/images/avatar-2.svg",
+      "/images/avatar-1.svg",
+    ];
+    const randomIndex = Math.floor(Math.random() * avatarArray.length);
+    return avatarArray[randomIndex]; // Trả về một avatar ngẫu nhiên
   }
 
   // Nếu đang ở trang đăng ký
@@ -46,90 +233,87 @@ $(document).ready(function () {
         valid = false;
       } else if (isEmailDuplicate(email)) {
         $("#email").css("border", "2px solid red");
-        alert("Email đã được đăng ký!");
+        alert("Email đã được đăng ký!"); // Hiển thị thông báo nếu email đã tồn tại
         valid = false;
       } else {
-        $("#email").css("border", "");
+        $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu email hợp lệ
       }
 
       // Kiểm tra username
       if (!validateUsername(username)) {
-        $("#name").css("border", "2px solid red");
+        $("#name").css("border", "2px solid red"); // Nếu username rỗng, hiển thị viền đỏ
         valid = false;
       } else {
-        $("#name").css("border", "");
+        $("#name").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
       }
 
-      // Kiểm tra mật khẩu
+      // Kiểm tra mật khẩu (bắt buộc có chữ hoa, số và ký tự đặc biệt)
       if (!validatePassword(password)) {
         $("#password").css("border", "2px solid red");
         valid = false;
       } else {
         $("#password").css("border", "");
       }
-      // Nếu tất cả các trường hợp đều hợp lệ thì lưu vào Local Storage và chuyển hướng
-      if (valid) {
-        const listAccout = localStorage.getItem("ACCOUT") || [];
 
-        // lay gia tri nguoi dung nhap vao o input
-        const email = $("#email").val();
-        const name = $("#name").val();
-        const password = $("#password").val();
+      // Nếu tất cả hợp lệ thì lưu vào Local Storage và chuyển hướng sang trang đăng nhập
+      if (valid) {
+        let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
+
         const data = {
-          name: name,
+          name: username,
           email: email,
           password: password,
+          avatar: getRandomAvatar(), // Gán avatar ngẫu nhiên cho tài khoản
         };
 
-        listAccout.push(data);
-        localStorage.setItem("ACCOUNT", JSON.stringify(listAccout));
-        window.location.href = "/siginin.html";
+        listAccout.push(data); // Thêm tài khoản vào danh sách
+        localStorage.setItem("ACCOUNT", JSON.stringify(listAccout)); // Lưu vào LocalStorage
+        window.location.href = "/siginin.html"; // Chuyển hướng sang trang đăng nhập
       }
     });
   } else {
+    // Nếu đang ở trang đăng nhập
     $(".create-button").click(function (e) {
-      e.preventDefault(); // Ngăn form không submit ngay lập tức
+      e.preventDefault();
       let email = $("#email").val();
-      let password = $("#password").val(); // Thêm trường mật khẩu chính
+      let password = $("#password").val();
 
-      const listAccout = localStorage.getItem("ACCOUNT")
-        ? JSON.parse(localStorage.getItem("ACCOUNT"))
-        : [];
-
+      let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
       let valid = true;
 
       // Kiểm tra email
       if (email === "" || !validateEmail(email)) {
-        $("#email").css("border", "2px solid red"); // Đổi viền sang màu đỏ nếu không hợp lệ
+        $("#email").css("border", "2px solid red");
         valid = false;
       } else {
-        $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
-        valid = true;
+        $("#email").css("border", "");
       }
 
       // Kiểm tra mật khẩu
       if (password === "" || !validatePassword(password)) {
-        $("#password").css("border", "2px solid red"); // Đổi viền sang màu đỏ nếu không hợp lệ
+        $("#password").css("border", "2px solid red");
         valid = false;
       } else {
-        $("#password").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
-        valid = true;
+        $("#password").css("border", "");
       }
 
+      // Tìm tài khoản trong danh sách LocalStorage
       const user = listAccout.find((user) => user.email === email);
 
       if (user) {
+        // Nếu email tồn tại, kiểm tra mật khẩu
         if (user.password === password) {
           valid = true;
         } else {
-          $("#password").css("border", "2px solid red"); // Đổi viền sang màu đỏ nếu không hợp lệ
+          $("#password").css("border", "2px solid red");
           valid = false;
         }
       } else {
-        $("#email").css("border", "2px solid red"); // Đổi viền sang màu đỏ nếu không hợp lệ
+        $("#email").css("border", "2px solid red");
         valid = false;
       }
 
+      // Nếu thông tin hợp lệ, lưu thông tin người dùng và chuyển sang trang liên hệ
       if (valid) {
         localStorage.setItem("USER", JSON.stringify(user));
         window.location.href = "/contact.html";
@@ -139,20 +323,19 @@ $(document).ready(function () {
 
   // Kiểm tra xem ô có bị trống không
   function isEmpty(value) {
-    return value.trim() === "";
+    return value.trim() === ""; // Loại bỏ khoảng trắng và kiểm tra rỗng
   }
 
-  // Hàm kiểm tra định dạng số điện thoại (kiểm tra cơ bản)
+  // Hàm kiểm tra định dạng số điện thoại
   function validatePhoneNumber(phone) {
-    const phonePattern = /^[0-9]{10,15}$/; // Kiểm tra từ 10 đến 15 chữ số
+    const phonePattern = /^[0-9]{10,15}$/; // Kiểm tra số điện thoại từ 10-15 số
     return phonePattern.test(phone);
   }
 
-  // Xử lý khi nhấn nút Thêm
+  // Xử lý khi nhấn nút Thêm liên hệ
   $(".contact-form__button button").click(function (e) {
-    e.preventDefault(); // Ngăn form không submit ngay lập tức
+    e.preventDefault();
     if ($("body").hasClass("contact")) {
-      // Lấy giá trị của các trường
       const firstName = $("input[placeholder='Enter first name']").val();
       const lastName = $("input[placeholder='Enter last name']").val();
       const email = $("input[placeholder='Enter email']").val();
@@ -162,7 +345,7 @@ $(document).ready(function () {
 
       let valid = true;
 
-      // Kiểm tra từng trường và áp dụng kiểm tra hợp lệ
+      // Kiểm tra từng trường và báo lỗi nếu không hợp lệ
       if (isEmpty(firstName)) {
         $("input[placeholder='Enter first name']").css(
           "border",
@@ -183,7 +366,6 @@ $(document).ready(function () {
         $("input[placeholder='Enter last name']").css("border", "");
       }
 
-      // Kiểm tra email thông qua hàm validateEmail
       if (email === "" || !validateEmail(email)) {
         $("input[placeholder='Enter email']").css("border", "2px solid red");
         valid = false;
@@ -191,7 +373,6 @@ $(document).ready(function () {
         $("input[placeholder='Enter email']").css("border", "");
       }
 
-      // Kiểm tra số điện thoại
       if (isEmpty(phone) || !validatePhoneNumber(phone)) {
         $("input[placeholder='Enter phone number']").css(
           "border",
@@ -212,7 +393,7 @@ $(document).ready(function () {
         $("input[placeholder='Enter birthdate']").css("border", "");
       }
 
-      // Nếu tất cả các trường hợp đều hợp lệ, lưu vào localStorage
+      // Nếu tất cả các trường đều hợp lệ, lưu thông tin liên hệ vào localStorage
       if (valid) {
         const contact = {
           id: new Date().getTime(),
@@ -224,115 +405,250 @@ $(document).ready(function () {
           gender: gender,
           creatAt: new Date().toISOString(),
         };
-        // Lưu vào localStorage
+
         let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
-        contacts.push(contact);
+        contacts.push(contact); // Thêm liên hệ vào danh sách
         localStorage.setItem("CONTACTS", JSON.stringify(contacts));
 
-        // Tùy chọn, có thể xóa sạch form sau khi lưu
         $(
           "input[type='text'], input[type='email'], input[type='tel'], input[type='']"
         ).val("");
         $("select").val("male");
-        window.location.href = "/listcontact.html";
+        window.location.href = "/listcontact.html"; // Chuyển hướng đến danh sách liên hệ
       }
     }
   });
 
-  // Thêm chức năng logout
+  $(document).ready(function () {
+    // Hàm hiển thị danh sách liên hệ từ LocalStorage
+    function renderContacts() {
+      let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
+      const contactList = $(".contact-list");
+      contactList.empty(); // Xóa danh sách cũ trước khi hiển thị danh sách mới
+
+      const imageArray = [
+        "images/Image1.svg",
+        "images/Image2.svg",
+        "images/Image3.svg",
+        "images/Image4.svg",
+        "images/Image5.svg",
+        "images/Image6.svg",
+      ];
+
+      // Kiểm tra nếu hình ảnh đã được lưu trữ trong localStorage
+      let savedImages =
+        JSON.parse(localStorage.getItem("CONTACT_IMAGES")) || {};
+
+      contacts.forEach((contact, index) => {
+        let randomImage;
+
+        // Nếu liên hệ đã có hình ảnh được lưu trữ, sử dụng lại
+        if (savedImages[contact.id]) {
+          randomImage = savedImages[contact.id];
+        } else {
+          // Chọn một hình ảnh ngẫu nhiên và lưu vào localStorage
+          randomImage =
+            imageArray[Math.floor(Math.random() * imageArray.length)];
+          savedImages[contact.id] = randomImage;
+          localStorage.setItem("CONTACT_IMAGES", JSON.stringify(savedImages));
+        }
+
+        const contactCard = `
+          <div class="contact-card" data-index="${index}" data-id="${contact.id}">
+            <div class="contact-card__image">
+              <img src="${randomImage}" alt="${contact.firstName} ${contact.lastName}" />
+            </div>
+            <div class="contact-card__info">
+              <div class="contact-card__name">${contact.firstName} ${contact.lastName}</div>
+              <div class="contact-card__email">${contact.email}</div>
+            </div>
+            <div class="contact-card__delete">
+              <img src="./images/Action.svg" class="delete-contact" data-index="${index}" alt="Delete">
+            </div>
+          </div>
+        `;
+        contactList.append(contactCard);
+      });
+
+      // Thêm sự kiện xóa liên hệ
+      $(".delete-contact").click(function () {
+        const index = $(this).data("index");
+        deleteContact(index);
+      });
+
+      $(".contact-card").click(function () {
+        const id = $(this).data("id");
+        window.location.href = "/viewdetailscontact.html?id=" + id;
+      });
+    }
+
+    // Hàm xóa liên hệ
+    function deleteContact(index) {
+      let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
+      contacts.splice(index, 1); // Xóa liên hệ theo chỉ số
+      localStorage.setItem("CONTACTS", JSON.stringify(contacts));
+      renderContacts(); // Cập nhật danh sách sau khi xóa
+    }
+
+    // Hiển thị danh sách liên hệ khi tải trang
+    renderContacts();
+  });
+  // Lấy thông tin người dùng từ LocalStorage và hiển thị
+  const user = JSON.parse(localStorage.getItem("USER"));
+
+  if (user && user.avatar) {
+    $(".dashboard__user-avatar img").attr("src", user.avatar); // Hiển thị avatar từ tài khoản
+  }
+
+  if (user && user.name) {
+    $(".dashboard__user-name").text(user.name);
+  } else {
+    $(".dashboard__user-name").text("Guest");
+  }
+
+  // Chức năng logout
   $(".dashboard__logout-button").click(function () {
-    // Xóa thông tin người dùng khỏi localStorage (nếu có)
-    localStorage.removeItem("");
+    localStorage.removeItem("USER");
+    window.location.href = "/siginin.html";
+  });
+});
+$(document).ready(function () {
+  // Xử lý sự kiện khi nhấn nút "Add Now" để thêm liên hệ
+  $(".btn__add").click(function (e) {
+    e.preventDefault(); // Ngăn form submit ngay lập tức
 
-    // Chuyển hướng về trang đăng nhập hoặc trang chủ sau khi đăng xuất
-    window.location.href = "/siginin.html"; // Đảm bảo rằng trang này tồn tại
+    // Lấy giá trị của các trường input
+    const firstName = $("input[placeholder='Enter first name']").val().trim();
+    const lastName = $("input[placeholder='Enter last name']").val().trim();
+    const email = $("input[placeholder='Enter email']")
+      .val()
+      .trim()
+      .toLowerCase(); // Trim và chuyển sang chữ thường
+    const phone = $("input[placeholder='Enter phone number']").val().trim();
+    const birthdate = $("input[placeholder='Enter birthdate']").val().trim();
+    const gender = $("select").val();
+
+    let valid = true;
+
+    // Kiểm tra từng trường input và hiển thị lỗi nếu không hợp lệ
+    if (!firstName) {
+      $("input[placeholder='Enter first name']").css("border", "2px solid red");
+      valid = false;
+    } else {
+      $("input[placeholder='Enter first name']").css("border", "");
+    }
+
+    if (!lastName) {
+      $("input[placeholder='Enter last name']").css("border", "2px solid red");
+      valid = false;
+    } else {
+      $("input[placeholder='Enter last name']").css("border", "");
+    }
+
+    if (email === "" || !validateEmail(email)) {
+      $("input[placeholder='Enter email']").css("border", "2px solid red");
+      valid = false;
+    } else {
+      $("input[placeholder='Enter email']").css("border", "");
+    }
+
+    if (!phone || !validatePhoneNumber(phone)) {
+      $("input[placeholder='Enter phone number']").css(
+        "border",
+        "2px solid red"
+      );
+      valid = false;
+    } else {
+      $("input[placeholder='Enter phone number']").css("border", "");
+    }
+
+    if (!birthdate) {
+      $("input[placeholder='Enter birthdate']").css("border", "2px solid red");
+      valid = false;
+    } else {
+      $("input[placeholder='Enter birthdate']").css("border", "");
+    }
+
+    // Lấy danh sách liên hệ từ localStorage
+    let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
+
+    // Kiểm tra email trùng lặp
+    const isEmailDuplicate = contacts.some(
+      (contact) => contact.email.trim().toLowerCase() === email
+    );
+
+    // Nếu email đã tồn tại
+    if (isEmailDuplicate) {
+      alert("Email đã tồn tại! Vui lòng nhập email khác.");
+      $("input[placeholder='Enter email']").css("border", "2px solid red");
+      valid = false;
+    }
+
+    // Nếu tất cả các trường hợp hợp lệ và email không trùng lặp thì lưu vào LocalStorage
+    if (valid && !isEmailDuplicate) {
+      const contact = {
+        id: new Date().getTime(), // Tạo ID duy nhất cho liên hệ
+        firstName: firstName,
+        lastName: lastName,
+        email: email, // Email đã được chuẩn hóa về chữ thường
+        phone: phone,
+        birthdate: birthdate, // Ngày sinh
+        gender: gender,
+        createdAt: new Date().toISOString(), // Thời gian tạo liên hệ
+      };
+
+      // Lưu thông tin liên hệ vào localStorage
+      contacts.push(contact);
+      localStorage.setItem("CONTACTS", JSON.stringify(contacts));
+
+      // Xóa sạch form sau khi lưu
+      $("input[type='text'], input[type='email'], input[type='tel']").val("");
+      $("select").val("male");
+
+      // Thông báo thành công và chuyển hướng
+      alert("Liên hệ đã được thêm thành công!");
+      window.location.href = "/listcontact.html"; // Chuyển hướng sang trang danh sách liên hệ
+    }
   });
 
-  // Thêm sự kiện click để chuyển sang trang "Contact" khi nhấn vào nút trong menu
-  $(".dashboard__nav-item:contains('Contact')").click(function () {
-    window.location.href = "/listcontact.html"; // Chuyển hướng sang trang "Contact"
-  });
+  // Hàm kiểm tra định dạng email
+  function validateEmail(email) {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailPattern.test(email); // Trả về true nếu email hợp lệ
+  }
 
-  $(".content__button").click(function () {
-    window.location.href = "/contact.html";
-  });
+  // Hàm kiểm tra định dạng số điện thoại
+  function validatePhoneNumber(phone) {
+    const phonePattern = /^[0-9]{10,15}$/; // Kiểm tra số điện thoại từ 10-15 số
+    return phonePattern.test(phone);
+  }
 });
 
 $(document).ready(function () {
-  // Hàm hiển thị danh sách liên hệ từ LocalStorage
-  function renderContacts() {
-    // Lấy danh sách liên hệ từ LocalStorage
-    let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
-
-    // Chọn phần tử hiển thị danh sách liên hệ
-    const contactList = $(".contact-list");
-    contactList.empty(); // Xóa danh sách cũ trước khi thêm mới
-
-    // Mảng các ảnh ngẫu nhiên
-    const imageArray = [
-      "images/Image1.svg",
-      "images/Image2.svg",
-      "images/Image3.svg",
-      "images/Image4.svg",
-      "images/Image5.svg",
-      "images/Image6.svg",
-    ];
-
-    // Lặp qua từng liên hệ và thêm vào phần hiển thị
-    contacts.forEach((contact, index) => {
-      // Chọn một ảnh ngẫu nhiên từ mảng
-      const randomImage =
-        imageArray[Math.floor(Math.random() * imageArray.length)];
-
-      const contactCard = `
-        <div class="contact-card" data-index="${index}" data-id="${contact.id}" >
-          <div class="contact-card__image">
-            <img src="${randomImage}" alt="${contact.firstName} ${contact.lastName}" />
-          </div>
-          <div class="contact-card__info">
-            <div class="contact-card__name">${contact.firstName} ${contact.lastName}</div>
-            <div class="contactcard__email">${contact.email}</div>
-          </div>
-          <div class="contact-card__delete">
-            <img src="./images/Action.svg" class="delete-contact" data-index="${index}" alt="Delete">
-          </div>
-        </div>
-      `;
-      contactList.append(contactCard);
-    });
-
-    // Thêm sự kiện xóa liên hệ
-    $(".delete-contact").click(function () {
-      const index = $(this).data("index");
-      deleteContact(index);
-    });
-
-    $(".contact-card").click(function () {
-      const id = $(this).data("id");
-      window.location.href = "/viewdetailscontact.html?id=" + id;
-    });
-  }
-
-  // Hàm xóa liên hệ
-  function deleteContact(index) {
-    let contacts = JSON.parse(localStorage.getItem("CONTACTS")) || [];
-    contacts.splice(index, 1); // Xóa liên hệ theo chỉ số
-    localStorage.setItem("CONTACTS", JSON.stringify(contacts)); // Cập nhật LocalStorage
-    renderContacts(); // Cập nhật danh sách hiển thị
-  }
-
-  // Hiển thị danh sách liên hệ khi tải trang
-  renderContacts();
+  // Khi nhấn vào nút "Add New Contact" sẽ chuyển hướng đến trang contact.html
+  $(".btn__add-new-contact").click(function () {
+    window.location.href = "/contact.html"; // Thay đổi URL để điều hướng đến trang thêm liên hệ
+  });
 });
 $(document).ready(function () {
-  // Chuyển hướng sang listteam khi nhấn vào nút "Team"
+  // Bắt sự kiện click vào nút Team
   $(".dashboard__nav-item:contains('Team')").click(function () {
-    window.location.href = "/listteam.html"; // Điều hướng sang listteam
+    // Chuyển hướng sang trang listteam.html
+    window.location.href = "/listteam.html"; // Đảm bảo trang listteam.html có trong dự án của bạn
   });
-
-  // Các đoạn mã khác cần thiết cho trang listcontact hoặc addcontact...
 });
+$(document).ready(function () {
+  // Bắt sự kiện khi người dùng nhấn vào thẻ liên hệ
+  $(".contact-card").click(function () {
+    const contactId = $(this).data("id"); // Lấy ID liên hệ từ thẻ
 
+    // Lưu ID liên hệ vào localStorage
+    localStorage.setItem("SELECTED_CONTACT_ID", contactId);
+
+    // Chuyển hướng đến trang xem chi tiết liên hệ
+    window.location.href = "/viewdetailscontact.html";
+  });
+});
 $(document).ready(function () {
   // Lấy chuỗi query string từ URL
   const queryString = window.location.search;
@@ -364,56 +680,27 @@ $(document).ready(function () {
     }
   }
 });
-function loginUser(username, email) {
-  const user = {
-    name: username,
-    email: email,
-  };
-  localStorage.setItem("USER", JSON.stringify(user)); // Lưu người dùng vào localStorage
-}
-$(document).ready(function () {
-  // Mảng các hình ảnh avatar ngẫu nhiên
-  const imageArray = [
-    "/images/avatar.svg",
-    "/images/avatar2.svg",
-    "/images/avatar3.svg",
-    "/images/avatar4.svg",
-    "/images/avatar5.svg",
-  ];
+document.addEventListener("DOMContentLoaded", function () {
+  // Khai báo biến để lưu trạng thái của checkbox
+  let isChecked = false;
 
-  // Hàm để lấy hoặc lưu hình ảnh avatar ngẫu nhiên
-  function getOrSetRandomAvatar() {
-    let avatar = localStorage.getItem("avatar");
+  // Lấy checkbox bằng ID
+  const checkbox = document.getElementById("remember-checkbox");
+  const submitButton = document.getElementById("submit-button");
 
-    // Nếu chưa có avatar nào được lưu trữ, random và lưu lại
-    if (!avatar) {
-      const randomIndex = Math.floor(Math.random() * imageArray.length);
-      avatar = imageArray[randomIndex];
-      localStorage.setItem("avatar", avatar); // Lưu avatar đã chọn vào localStorage
+  // Sự kiện thay đổi giá trị checkbox
+  checkbox.addEventListener("change", function () {
+    isChecked = checkbox.checked; // Cập nhật biến khi checkbox thay đổi
+    console.log("Checkbox checked:", isChecked);
+  });
+
+  // Sự kiện khi người dùng nhấn nút submit
+  submitButton.addEventListener("click", function (e) {
+    if (!isChecked) {
+      e.preventDefault(); // Ngăn không cho submit nếu checkbox chưa được chọn
+      alert("Please accept the terms and conditions before proceeding.");
+    } else {
+      console.log("Form submitted successfully!");
     }
-
-    return avatar;
-  }
-
-  // Hiển thị avatar ngẫu nhiên nhưng giữ nguyên sau khi reload
-  const avatar = getOrSetRandomAvatar();
-  $(".dashboard__user-avatar img").attr("src", avatar);
-
-  // Lấy thông tin người dùng từ localStorage (giả sử đã được lưu từ khi đăng nhập)
-  const user = JSON.parse(localStorage.getItem("USER"));
-
-  // Hiển thị tên người dùng nếu đã đăng nhập
-  if (user && user.name) {
-    $(".dashboard__user-name").text(user.name); // Thay thế tên người dùng
-  } else {
-    $(".dashboard__user-name").text("Guest"); // Nếu chưa đăng nhập, hiển thị Guest
-  }
-
-  // Thêm chức năng logout
-  $(".dashboard__logout-button").click(function () {
-    // Xóa thông tin người dùng khỏi localStorage khi logout
-    localStorage.removeItem("USER");
-    localStorage.removeItem("avatar"); // Xóa avatar đã lưu
-    window.location.href = "/siginin.html"; // Điều hướng về trang đăng nhập
   });
 });

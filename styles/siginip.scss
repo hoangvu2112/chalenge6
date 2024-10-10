@@ -63,7 +63,9 @@ body {
             font-weight: 600;
             color: #202224;
           }
-          input {
+          #password,
+          #email,
+          #name {
             width: 516px;
             border-radius: 8px;
             padding: 16px;
@@ -73,12 +75,40 @@ body {
             display: flex;
             justify-content: space-between;
           }
+
           .check {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            input[type="checkbox"] {
+              width: 20px;
+              height: 20px;
+              margin-right: 10px;
+              border: 2px solid #a3a3a3;
+              border-radius: 6px;
+              cursor: pointer;
+              position: relative;
+              appearance: none; /* Ẩn checkbox mặc định */
 
-            img {
-              width: 24px;
+              &:checked {
+                background-color: #4caf50;
+                border-color: #4caf50;
+              }
+
+              &:checked::after {
+                content: "";
+                position: absolute;
+                left: 5px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+              }
+
+              &.error {
+                border-color: red;
+              }
             }
           }
         }

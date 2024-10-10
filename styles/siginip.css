@@ -67,7 +67,9 @@ body {
   font-weight: 600;
   color: #202224;
 }
-.hero .main-content .login-box .form-container .input-box input {
+.hero .main-content .login-box .form-container .input-box #password,
+.hero .main-content .login-box .form-container .input-box #email,
+.hero .main-content .login-box .form-container .input-box #name {
   width: 516px;
   border-radius: 8px;
   padding: 16px;
@@ -79,10 +81,37 @@ body {
 }
 .hero .main-content .login-box .form-container .input-box .check {
   display: flex;
-  gap: 12px;
+  align-items: center;
 }
-.hero .main-content .login-box .form-container .input-box .check img {
-  width: 24px;
+.hero .main-content .login-box .form-container .input-box .check input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 2px solid #a3a3a3;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; /* Ẩn checkbox mặc định */
+}
+.hero .main-content .login-box .form-container .input-box .check input[type=checkbox]:checked {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+.hero .main-content .login-box .form-container .input-box .check input[type=checkbox]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.hero .main-content .login-box .form-container .input-box .check input[type=checkbox].error {
+  border-color: red;
 }
 .hero .main-content .login-box .form-container .options {
   display: flex;
