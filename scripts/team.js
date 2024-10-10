@@ -29,81 +29,103 @@ $(document).ready(function () {
   // Xử lý khi nhấn nút Add Now
   $(".contact-form__button button").click(function (e) {
     e.preventDefault();
+    let dataContact = JSON.parse(localStorage.getItem("TEAM")) || []; // Thay đổi thành TEAM
 
-    const firstName = $("input[placeholder='Enter first name']").val();
-    const lastName = $("input[placeholder='Enter last name']").val();
-    const email = $("input[placeholder='Enter email']").val();
-    const phone = $("input[placeholder='Enter phone number']").val();
-    const position = $("input[placeholder='Enter position']").val();
-    const gender = $("select").val();
+    if ($("body").hasClass("contact")) {
+      const firstName = $("input[placeholder='Enter first name']").val();
+      const lastName = $("input[placeholder='Enter last name']").val();
+      const email = $("input[placeholder='Enter email']").val();
+      const phone = $("input[placeholder='Enter phone number']").val();
+      const position = $("input[placeholder='Enter position']").val();
+      const gender = $("select").val();
 
-    let valid = true;
+      let valid = true;
 
-    // Kiểm tra từng trường
-    if (isEmpty(firstName)) {
-      $("input[placeholder='Enter first name']").css("border", "2px solid red");
-      valid = false;
-    } else {
-      $("input[placeholder='Enter first name']").css("border", "");
-    }
+      // Kiểm tra từng trường và báo lỗi nếu không hợp lệ
+      if (isEmpty(firstName)) {
+        $("input[placeholder='Enter first name']").css(
+          "border",
+          "2px solid red"
+        );
+        valid = false;
+      } else {
+        $("input[placeholder='Enter first name']").css("border", "");
+      }
 
-    if (isEmpty(lastName)) {
-      $("input[placeholder='Enter last name']").css("border", "2px solid red");
-      valid = false;
-    } else {
-      $("input[placeholder='Enter last name']").css("border", "");
-    }
+      if (isEmpty(lastName)) {
+        $("input[placeholder='Enter last name']").css(
+          "border",
+          "2px solid red"
+        );
+        valid = false;
+      } else {
+        $("input[placeholder='Enter last name']").css("border", "");
+      }
 
-    if (email === "" || !validateEmail(email)) {
-      $("input[placeholder='Enter email']").css("border", "2px solid red");
-      valid = false;
-    } else {
-      $("input[placeholder='Enter email']").css("border", "");
-    }
+      if (email === "" || !validateEmail(email)) {
+        $("input[placeholder='Enter email']").css("border", "2px solid red");
+        valid = false;
+      } else {
+        $("input[placeholder='Enter email']").css("border", "");
+      }
 
-    if (isEmpty(phone) || !validatePhoneNumber(phone)) {
-      $("input[placeholder='Enter phone number']").css(
-        "border",
-        "2px solid red"
-      );
-      valid = false;
-    } else {
-      $("input[placeholder='Enter phone number']").css("border", "");
-    }
+      if (isEmpty(phone) || !validatePhoneNumber(phone)) {
+        $("input[placeholder='Enter phone number']").css(
+          "border",
+          "2px solid red"
+        );
+        valid = false;
+      } else {
+        $("input[placeholder='Enter phone number']").css("border", "");
+      }
 
-    if (isEmpty(position)) {
-      $("input[placeholder='Enter position']").css("border", "2px solid red");
-      valid = false;
-    } else {
-      $("input[placeholder='Enter position']").css("border", "");
-    }
+      if (isEmpty(position)) {
+        $("input[placeholder='Enter position']").css("border", "2px solid red");
+        valid = false;
+      } else {
+        $("input[placeholder='Enter position']").css("border", "");
+      }
 
-    // Nếu tất cả các trường hợp đều hợp lệ, thêm vào localStorage
-    if (valid) {
-      const team = {
-        id: new Date().getTime(),
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        position: position,
-        gender: gender,
-        creatAt: new Date().toISOString(),
-      };
+      // Nếu tất cả các trường đều hợp lệ, lưu thông tin liên hệ vào localStorage
+      if (valid) {
+        const team = {
+          id: new Date().getTime(),
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: phone,
+          position: position,
+          gender: gender,
+          creatAt: new Date().toISOString(),
+        };
 
-      // Lưu danh sách team vào localStorage
-      let teams = JSON.parse(localStorage.getItem("TEAM")) || [];
-      teams.push(team);
-      localStorage.setItem("TEAM", JSON.stringify(teams));
+        let contacts = JSON.parse(localStorage.getItem("TEAM")) || []; // Lấy từ TEAM
+        contacts.push(team); // Sử dụng đúng tên biến
+        localStorage.setItem("TEAM", JSON.stringify(contacts)); // Lưu vào TEAM
 
-      // Tùy chọn: Xóa các trường dữ liệu sau khi lưu
-      $("input[type='text'], input[type='email'], input[type='tel']").val("");
-      $("select").val("male");
+        // Reset các trường sau khi thêm thành công
+        $("input[type='text'], input[type='email'], input[type='tel']").val("");
+        $("select").val("male");
 
-      // Chuyển hướng sang trang danh sách nhóm
-      window.location.href = "/listteam.html";
+        window.location.href = "/listteam.html"; // Chuyển hướng đến danh sách team
+      }
     }
   });
+
+  // Các hàm kiểm tra hợp lệ
+  function isEmpty(value) {
+    return value === "" || value == null;
+  }
+
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
+  function validatePhoneNumber(phone) {
+    const re = /^[0-9]{10,12}$/;
+    return re.test(phone);
+  }
 
   // Thêm sự kiện click vào nút "Team" trong menu
   $(".dashboard__nav-item:contains('Team')").click(function () {
