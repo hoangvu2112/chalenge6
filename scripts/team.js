@@ -302,7 +302,7 @@ $(document).ready(function () {
     localStorage.removeItem("USER");
     localStorage.removeItem("avatar"); // Xóa avatar đã lưu
     console.log("Đã xóa avatar và thông tin người dùng khỏi localStorage."); // Log sau khi xóa
-    window.location.href = "/siginin.html"; // Điều hướng về trang đăng nhập
+    window.location.href = "/signin.html"; // Điều hướng về trang đăng nhập
   });
 });
 
