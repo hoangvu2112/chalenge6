@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
           accounts.push({
             email: email,
             username: username,
-            password: password,
+            // password: password,
           });
           localStorage.setItem("ACCOUNT", JSON.stringify(accounts));
           alert("Registration successful! Redirecting to login page...");
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Kiểm tra mật khẩu
-        if (password === "" || !validatePassword(password)) {
+        if (password === "" || !validatePassword(password) || email === "") {
           $("#password").css("border", "2px solid red");
           valid = false;
         } else {
@@ -213,109 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return avatarArray[randomIndex]; // Trả về một avatar ngẫu nhiên
   }
 
-  // Nếu đang ở trang đăng ký
-  // if ($("body").hasClass("signUp")) {
-  //   $(".create-button").click(function (e) {
-  //     e.preventDefault(); // Ngăn form không submit ngay lập tức
-  //     let email = $("#email").val();
-  //     let username = $("#name").val();
-  //     let password = $("#password").val();
-  //     let valid = true;
-
-  //     // Kiểm tra email
-  //     if (email === "" || !validateEmail(email)) {
-  //       $("#email").css("border", "2px solid red");
-  //       valid = false;
-  //     } else if (isEmailDuplicate(email)) {
-  //       $("#email").css("border", "2px solid red");
-  //       alert("Email đã được đăng ký!"); // Hiển thị thông báo nếu email đã tồn tại
-  //       valid = false;
-  //     } else {
-  //       $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu email hợp lệ
-  //     }
-
-  //     // Kiểm tra username
-  //     if (!validateUsername(username)) {
-  //       $("#name").css("border", "2px solid red"); // Nếu username rỗng, hiển thị viền đỏ
-  //       valid = false;
-  //     } else {
-  //       $("#name").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
-  //     }
-
-  //     // Kiểm tra mật khẩu (bắt buộc có chữ hoa, số và ký tự đặc biệt)
-  //     if (!validatePassword(password)) {
-  //       $("#password").css("border", "2px solid red");
-  //       valid = false;
-  //     } else {
-  //       $("#password").css("border", "");
-  //     }
-
-  //     // Nếu tất cả hợp lệ thì lưu vào Local Storage và chuyển hướng sang trang đăng nhập
-  //     if (valid) {
-  //       let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
-
-  //       const data = {
-  //         name: username,
-  //         email: email,
-  //         password: password,
-  //         avatar: getRandomAvatar(), // Gán avatar ngẫu nhiên cho tài khoản
-  //       };
-
-  //       listAccout.push(data); // Thêm tài khoản vào danh sách
-  //       localStorage.setItem("ACCOUNT", JSON.stringify(listAccout)); // Lưu vào LocalStorage
-  //       window.location.href = "/signin.html"; // Chuyển hướng sang trang đăng nhập
-  //     }
-  //   });
-  // } else {
-  //   // Nếu đang ở trang đăng nhập
-  //   $(".create-button").click(function (e) {
-  //     e.preventDefault();
-  //     let email = $("#email").val();
-  //     let password = $("#password").val();
-
-  //     let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
-  //     let valid = true;
-
-  //     // Kiểm tra email
-  //     if (email === "" || !validateEmail(email)) {
-  //       $("#email").css("border", "2px solid red");
-  //       valid = false;
-  //     } else {
-  //       $("#email").css("border", "");
-  //     }
-
-  //     // Kiểm tra mật khẩu
-  //     if (password === "" || !validatePassword(password)) {
-  //       $("#password").css("border", "2px solid red");
-  //       valid = false;
-  //     } else {
-  //       $("#password").css("border", "");
-  //     }
-
-  //     // Tìm tài khoản trong danh sách LocalStorage
-  //     const user = listAccout.find((user) => user.email === email);
-
-  //     if (user) {
-  //       // Nếu email tồn tại, kiểm tra mật khẩu
-  //       if (user.password === password) {
-  //         valid = true;
-  //       } else {
-  //         $("#password").css("border", "2px solid red");
-  //         valid = false;
-  //       }
-  //     } else {
-  //       $("#email").css("border", "2px solid red");
-  //       valid = false;
-  //     }
-
-  //     // Nếu thông tin hợp lệ, lưu thông tin người dùng và chuyển sang trang liên hệ
-  //     if (valid) {
-  //       localStorage.setItem("USER", JSON.stringify(user));
-  //       window.location.href = "/contact.html";
-  //     }
-  //   });
-  // }
-
   // Kiểm tra xem ô có bị trống không
   function isEmpty(value) {
     return value.trim() === ""; // Loại bỏ khoảng trắng và kiểm tra rỗng
@@ -330,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Xử lý khi nhấn nút Thêm liên hệ
   $(".contact-form__button button").click(function (e) {
     e.preventDefault();
+    let dataContact = JSON.parse(localStorage.getItem("CONTACTS")) || [];
     if ($("body").hasClass("contact")) {
       const firstName = $("input[placeholder='Enter first name']").val();
       const lastName = $("input[placeholder='Enter last name']").val();
@@ -339,7 +237,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const gender = $("select").val();
 
       let valid = true;
-
       // Kiểm tra từng trường và báo lỗi nếu không hợp lệ
       if (isEmpty(firstName)) {
         $("input[placeholder='Enter first name']").css(
@@ -361,7 +258,11 @@ document.addEventListener("DOMContentLoaded", function () {
         $("input[placeholder='Enter last name']").css("border", "");
       }
 
-      if (email === "" || !validateEmail(email)) {
+      if (
+        email === "" ||
+        !validateEmail(email) ||
+        email === dataContact.email
+      ) {
         $("input[placeholder='Enter email']").css("border", "2px solid red");
         valid = false;
       } else {
@@ -387,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         $("input[placeholder='Enter birthdate']").css("border", "");
       }
-
       // Nếu tất cả các trường đều hợp lệ, lưu thông tin liên hệ vào localStorage
       if (valid) {
         const contact = {
@@ -490,13 +390,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   // Lấy thông tin người dùng từ LocalStorage và hiển thị
   const user = JSON.parse(localStorage.getItem("USER"));
-
+  console.log(user.username);
   if (user && user.avatar) {
     $(".dashboard__user-avatar img").attr("src", user.avatar); // Hiển thị avatar từ tài khoản
   }
 
-  if (user && user.name) {
-    $(".dashboard__user-name").text(user.name);
+  if (user && user.username) {
+    $(".dashboard__user-name").text(user.username);
   } else {
     $(".dashboard__user-name").text("Guest");
   }
