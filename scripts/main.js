@@ -35,19 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Hàm kiểm tra checkbox có được chọn không và hiển thị lỗi
+  function validateCheckbox(checkboxId) {
+    const checkbox = document.getElementById(checkboxId);
+    if (!checkbox.checked) {
+      checkbox.classList.add("checkbox--error"); // Thêm lớp lỗi cho checkbox
+      return false;
+    } else {
+      checkbox.classList.remove("checkbox--error");
+      return true;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     // Hàm kiểm tra checkbox có được chọn hay không và hiển thị lỗi
-    function validateCheckbox(checkboxId) {
-      const checkbox = document.getElementById(checkboxId);
-      if (!checkbox.checked) {
-        checkbox.classList.add("checkbox--error"); // Thêm lớp lỗi cho checkbox
-        return false;
-      } else {
-        checkbox.classList.remove("checkbox--error");
-        return true;
-      }
-    }
 
     // Hàm xử lý hiển thị lỗi và thêm viền đỏ cho các trường khác (nếu có)
     function showError(inputId, errorMessage, show) {
@@ -103,34 +103,31 @@ document.addEventListener("DOMContentLoaded", function () {
         let valid = true;
 
         // Kiểm tra email
-        if (!validateEmail(email)) {
-          showError("email", "Invalid email format", true);
+        if (email === "" || !validateEmail(email)) {
+          $("#email").css("border", "2px solid red");
           valid = false;
         } else if (isEmailDuplicate(email)) {
-          showError("email", "Email already exists!", true);
+          $("#email").css("border", "2px solid red");
+          alert("Email đã được đăng ký!"); // Hiển thị thông báo nếu email đã tồn tại
           valid = false;
         } else {
-          showError("email", "", false);
+          $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu email hợp lệ
         }
 
         // Kiểm tra username
         if (!validateUsername(username)) {
-          showError("name", "Username cannot be empty", true);
+          $("#name").css("border", "2px solid red"); // Nếu username rỗng, hiển thị viền đỏ
           valid = false;
         } else {
-          showError("name", "", false);
+          $("#name").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
         }
 
-        // Kiểm tra mật khẩu
+        // Kiểm tra mật khẩu (bắt buộc có chữ hoa, số và ký tự đặc biệt)
         if (!validatePassword(password)) {
-          showError(
-            "password",
-            "Password must be at least 6 characters with one uppercase letter",
-            true
-          );
+          $("#password").css("border", "2px solid red");
           valid = false;
         } else {
-          showError("password", "", false);
+          $("#password").css("border", "");
         }
 
         // Kiểm tra checkbox
@@ -148,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
           localStorage.setItem("ACCOUNT", JSON.stringify(accounts));
           alert("Registration successful! Redirecting to login page...");
-          window.location.href = "/signin.html"; // Chuyển đến trang đăng nhập
+          window.location.href = "/siginin.html"; // Chuyển đến trang đăng nhập
         }
       });
   }
@@ -219,107 +216,107 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Nếu đang ở trang đăng ký
-  if ($("body").hasClass("signUp")) {
-    $(".create-button").click(function (e) {
-      e.preventDefault(); // Ngăn form không submit ngay lập tức
-      let email = $("#email").val();
-      let username = $("#name").val();
-      let password = $("#password").val();
-      let valid = true;
+  // if ($("body").hasClass("signUp")) {
+  //   $(".create-button").click(function (e) {
+  //     e.preventDefault(); // Ngăn form không submit ngay lập tức
+  //     let email = $("#email").val();
+  //     let username = $("#name").val();
+  //     let password = $("#password").val();
+  //     let valid = true;
 
-      // Kiểm tra email
-      if (email === "" || !validateEmail(email)) {
-        $("#email").css("border", "2px solid red");
-        valid = false;
-      } else if (isEmailDuplicate(email)) {
-        $("#email").css("border", "2px solid red");
-        alert("Email đã được đăng ký!"); // Hiển thị thông báo nếu email đã tồn tại
-        valid = false;
-      } else {
-        $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu email hợp lệ
-      }
+  //     // Kiểm tra email
+  //     if (email === "" || !validateEmail(email)) {
+  //       $("#email").css("border", "2px solid red");
+  //       valid = false;
+  //     } else if (isEmailDuplicate(email)) {
+  //       $("#email").css("border", "2px solid red");
+  //       alert("Email đã được đăng ký!"); // Hiển thị thông báo nếu email đã tồn tại
+  //       valid = false;
+  //     } else {
+  //       $("#email").css("border", ""); // Trở lại trạng thái bình thường nếu email hợp lệ
+  //     }
 
-      // Kiểm tra username
-      if (!validateUsername(username)) {
-        $("#name").css("border", "2px solid red"); // Nếu username rỗng, hiển thị viền đỏ
-        valid = false;
-      } else {
-        $("#name").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
-      }
+  //     // Kiểm tra username
+  //     if (!validateUsername(username)) {
+  //       $("#name").css("border", "2px solid red"); // Nếu username rỗng, hiển thị viền đỏ
+  //       valid = false;
+  //     } else {
+  //       $("#name").css("border", ""); // Trở lại trạng thái bình thường nếu hợp lệ
+  //     }
 
-      // Kiểm tra mật khẩu (bắt buộc có chữ hoa, số và ký tự đặc biệt)
-      if (!validatePassword(password)) {
-        $("#password").css("border", "2px solid red");
-        valid = false;
-      } else {
-        $("#password").css("border", "");
-      }
+  //     // Kiểm tra mật khẩu (bắt buộc có chữ hoa, số và ký tự đặc biệt)
+  //     if (!validatePassword(password)) {
+  //       $("#password").css("border", "2px solid red");
+  //       valid = false;
+  //     } else {
+  //       $("#password").css("border", "");
+  //     }
 
-      // Nếu tất cả hợp lệ thì lưu vào Local Storage và chuyển hướng sang trang đăng nhập
-      if (valid) {
-        let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
+  //     // Nếu tất cả hợp lệ thì lưu vào Local Storage và chuyển hướng sang trang đăng nhập
+  //     if (valid) {
+  //       let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
 
-        const data = {
-          name: username,
-          email: email,
-          password: password,
-          avatar: getRandomAvatar(), // Gán avatar ngẫu nhiên cho tài khoản
-        };
+  //       const data = {
+  //         name: username,
+  //         email: email,
+  //         password: password,
+  //         avatar: getRandomAvatar(), // Gán avatar ngẫu nhiên cho tài khoản
+  //       };
 
-        listAccout.push(data); // Thêm tài khoản vào danh sách
-        localStorage.setItem("ACCOUNT", JSON.stringify(listAccout)); // Lưu vào LocalStorage
-        window.location.href = "/siginin.html"; // Chuyển hướng sang trang đăng nhập
-      }
-    });
-  } else {
-    // Nếu đang ở trang đăng nhập
-    $(".create-button").click(function (e) {
-      e.preventDefault();
-      let email = $("#email").val();
-      let password = $("#password").val();
+  //       listAccout.push(data); // Thêm tài khoản vào danh sách
+  //       localStorage.setItem("ACCOUNT", JSON.stringify(listAccout)); // Lưu vào LocalStorage
+  //       window.location.href = "/siginin.html"; // Chuyển hướng sang trang đăng nhập
+  //     }
+  //   });
+  // } else {
+  //   // Nếu đang ở trang đăng nhập
+  //   $(".create-button").click(function (e) {
+  //     e.preventDefault();
+  //     let email = $("#email").val();
+  //     let password = $("#password").val();
 
-      let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
-      let valid = true;
+  //     let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
+  //     let valid = true;
 
-      // Kiểm tra email
-      if (email === "" || !validateEmail(email)) {
-        $("#email").css("border", "2px solid red");
-        valid = false;
-      } else {
-        $("#email").css("border", "");
-      }
+  //     // Kiểm tra email
+  //     if (email === "" || !validateEmail(email)) {
+  //       $("#email").css("border", "2px solid red");
+  //       valid = false;
+  //     } else {
+  //       $("#email").css("border", "");
+  //     }
 
-      // Kiểm tra mật khẩu
-      if (password === "" || !validatePassword(password)) {
-        $("#password").css("border", "2px solid red");
-        valid = false;
-      } else {
-        $("#password").css("border", "");
-      }
+  //     // Kiểm tra mật khẩu
+  //     if (password === "" || !validatePassword(password)) {
+  //       $("#password").css("border", "2px solid red");
+  //       valid = false;
+  //     } else {
+  //       $("#password").css("border", "");
+  //     }
 
-      // Tìm tài khoản trong danh sách LocalStorage
-      const user = listAccout.find((user) => user.email === email);
+  //     // Tìm tài khoản trong danh sách LocalStorage
+  //     const user = listAccout.find((user) => user.email === email);
 
-      if (user) {
-        // Nếu email tồn tại, kiểm tra mật khẩu
-        if (user.password === password) {
-          valid = true;
-        } else {
-          $("#password").css("border", "2px solid red");
-          valid = false;
-        }
-      } else {
-        $("#email").css("border", "2px solid red");
-        valid = false;
-      }
+  //     if (user) {
+  //       // Nếu email tồn tại, kiểm tra mật khẩu
+  //       if (user.password === password) {
+  //         valid = true;
+  //       } else {
+  //         $("#password").css("border", "2px solid red");
+  //         valid = false;
+  //       }
+  //     } else {
+  //       $("#email").css("border", "2px solid red");
+  //       valid = false;
+  //     }
 
-      // Nếu thông tin hợp lệ, lưu thông tin người dùng và chuyển sang trang liên hệ
-      if (valid) {
-        localStorage.setItem("USER", JSON.stringify(user));
-        window.location.href = "/contact.html";
-      }
-    });
-  }
+  //     // Nếu thông tin hợp lệ, lưu thông tin người dùng và chuyển sang trang liên hệ
+  //     if (valid) {
+  //       localStorage.setItem("USER", JSON.stringify(user));
+  //       window.location.href = "/contact.html";
+  //     }
+  //   });
+  // }
 
   // Kiểm tra xem ô có bị trống không
   function isEmpty(value) {
