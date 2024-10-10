@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
           localStorage.setItem("ACCOUNT", JSON.stringify(accounts));
           alert("Registration successful! Redirecting to login page...");
-          window.location.href = "/siginin.html"; // Chuyển đến trang đăng nhập
+          window.location.href = "/signin.html"; // Chuyển đến trang đăng nhập
         }
       });
   }
@@ -156,50 +156,48 @@ document.addEventListener("DOMContentLoaded", function () {
       .querySelector(".create-button")
       .addEventListener("click", function (e) {
         e.preventDefault();
+        let email = $("#email").val();
+        let password = $("#password").val();
 
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
+        let listAccout = JSON.parse(localStorage.getItem("ACCOUNT")) || [];
         let valid = true;
 
         // Kiểm tra email
-        if (!validateEmail(email)) {
-          showError("email", "Invalid email format", true);
+        if (email === "" || !validateEmail(email)) {
+          $("#email").css("border", "2px solid red");
           valid = false;
         } else {
-          showError("email", "", false);
+          $("#email").css("border", "");
         }
 
         // Kiểm tra mật khẩu
-        if (!validatePassword(password)) {
-          showError("password", "Password must be at least 6 characters", true);
+        if (password === "" || !validatePassword(password)) {
+          $("#password").css("border", "2px solid red");
           valid = false;
         } else {
-          showError("password", "", false);
+          $("#password").css("border", "");
         }
 
-        // Kiểm tra email và mật khẩu đúng với dữ liệu trong Local Storage
-        if (valid && !isValidLogin(email, password)) {
-          showError("email", "Invalid email or password", true);
-          showError("password", "Invalid email or password", true);
-          valid = false;
-        }
+        // Tìm tài khoản trong danh sách LocalStorage
+        const user = listAccout.find((user) => user.email === email);
 
-        // Kiểm tra checkbox "Remember me"
-        if (!validateCheckbox("remember-checkbox")) {
-          showError(
-            "remember-checkbox",
-            "You must accept terms and conditions",
-            true
-          );
-          valid = false;
+        if (user) {
+          // Nếu email tồn tại, kiểm tra mật khẩu
+          if (user.password === password) {
+            valid = true;
+          } else {
+            $("#password").css("border", "2px solid red");
+            valid = false;
+          }
         } else {
-          showError("remember-checkbox", "", false);
+          $("#email").css("border", "2px solid red");
+          valid = false;
         }
 
-        // Nếu hợp lệ, chuyển đến dashboard
+        // Nếu thông tin hợp lệ, lưu thông tin người dùng và chuyển sang trang liên hệ
         if (valid) {
-          alert("Login successful! Redirecting to dashboard...");
-          window.location.href = "/contact.html"; // Điều hướng sang dashboard
+          localStorage.setItem("USER", JSON.stringify(user));
+          window.location.href = "/contact.html";
         }
       });
   }
@@ -265,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //       listAccout.push(data); // Thêm tài khoản vào danh sách
   //       localStorage.setItem("ACCOUNT", JSON.stringify(listAccout)); // Lưu vào LocalStorage
-  //       window.location.href = "/siginin.html"; // Chuyển hướng sang trang đăng nhập
+  //       window.location.href = "/signin.html"; // Chuyển hướng sang trang đăng nhập
   //     }
   //   });
   // } else {
@@ -506,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Chức năng logout
   $(".dashboard__logout-button").click(function () {
     localStorage.removeItem("USER");
-    window.location.href = "/siginin.html";
+    window.location.href = "/signin.html";
   });
 });
 $(document).ready(function () {

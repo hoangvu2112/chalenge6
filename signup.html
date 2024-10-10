@@ -4,27 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <link rel="stylesheet" href="styles/siginip.css" />
+    <link rel="stylesheet" href="styles/auth.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
       rel="stylesheet"
     />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/scripts/main.js"></script>
   </head>
-  <body class="signIn">
+  <body class="signUp">
     <div class="hero">
       <div class="header">
         <div class="main-content">
           <div class="login-box">
             <div class="login-hero">
               <div class="login-header">
-                <div class="welcome-text">Login to Account</div>
-                <div class="sub-text">
-                  Please enter your email and password to continue
-                </div>
+                <div class="welcome-text">Create an Account</div>
+                <div class="sub-text">Create a account to continue</div>
               </div>
             </div>
             <div class="form-container">
@@ -36,7 +35,14 @@
                   placeholder="esteban_schiller@gmail.com"
                 />
               </div>
-
+              <div class="input-box password-box">
+                <div class="title">Username</div>
+                <input type="name" id="name" placeholder="Username" />
+                <div
+                  class="show-password-icon"
+                  onclick="togglePassword('password')"
+                ></div>
+              </div>
               <div class="input-box password-box">
                 <div class="forget">
                   <div class="title">Password</div>
@@ -46,7 +52,7 @@
                 <input type="password" id="password" placeholder="Password" />
                 <div
                   class="show-password-icon"
-                  onclick="togglePassword('password')"
+                  onclick="togglePassword('confirm-password')"
                 ></div>
                 <div class="check">
                   <!-- Checkbox dạng input -->
@@ -61,10 +67,9 @@
                 </div>
               </div>
               <div class="sign-up-box">
-                <button type="submit" class="create-button">Sign in</button>
+                <button type="submit" class="create-button">Sign Up</button>
                 <div class="sign-up-text">
-                  Don’t have an account?
-                  <a href="/siginup.html">Create Account</a>
+                  Already have an account? <a href="/signin.html">Login</a>
                 </div>
               </div>
             </div>
