@@ -110,7 +110,7 @@ body {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.hero .main-content .login-box .form-container .input-box .check input[type=checkbox].error {
+.hero .main-content .login-box .form-container .input-box .check input[type=checkbox].checkbox--error {
   border-color: red;
 }
 .hero .main-content .login-box .form-container .options {
